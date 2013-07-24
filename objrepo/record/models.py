@@ -10,7 +10,11 @@ class Record(models.Model):
         result = {}
 
         for l in self.out_links.filter(inherit=True):
-            result.update(l.link_to.all_metadata)
+            if l.prefix is None:
+                result.update(l.link_to.all_metadata)
+            else:
+                for k,v in l.link_to.all_metadata.iteritems():
+                    result[l.prefix + ':' + k] = v
 
         result.update(self.metadata)
         return result
