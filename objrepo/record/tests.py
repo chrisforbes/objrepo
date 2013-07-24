@@ -25,7 +25,7 @@ class RecordTests(TestCase):
         d = self.r.all_metadata
         self.assertEqual(d['ex:llama_id'], 42)
 
-    def test_metadata_one_record_noinherit(self):
+    def test_metadata_noinherit(self):
         # this should work the same way.
         l = Link.objects.create(
             link_from=self.r,
@@ -36,4 +36,17 @@ class RecordTests(TestCase):
         d = self.r.all_metadata
 
         self.assertEqual(d['ex:llama_id'], 42)
-        self.assertNotIn('ex:related_to', d)
+        self.assertNotIn('ex:another_property', d)
+
+    def test_metadata_inherit(self):
+        # these records are linked, and marked to inherit prefixless.
+        l = Link.objects.create(
+            link_from=self.r,
+            link_to=self.q,
+            label='ex:related_to',
+            inherit=True)
+
+        d = self.r.all_metadata
+
+        self.assertEqual(d['ex:llama_id'], 42)
+        self.assertEqual(d['ex:another_property'], 23)

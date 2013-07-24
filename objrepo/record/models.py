@@ -7,7 +7,13 @@ class Record(models.Model):
 
     @property
     def all_metadata(self):
-        return self.metadata
+        result = {}
+
+        for l in self.out_links.filter(inherit=True):
+            result.update(l.link_to.all_metadata)
+
+        result.update(self.metadata)
+        return result
 
 class Link(models.Model):
     link_from = models.ForeignKey(Record, related_name='out_links')
