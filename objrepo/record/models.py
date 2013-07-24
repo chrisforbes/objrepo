@@ -5,7 +5,9 @@ class Record(models.Model):
     metadata = JSONField(blank=True)
     title = models.TextField()
 
-    related = models.ManyToManyField('Record', through='Link')
+    @property
+    def all_metadata(self):
+        return self.metadata
 
 class Link(models.Model):
     link_from = models.ForeignKey(Record, related_name='out_links')
