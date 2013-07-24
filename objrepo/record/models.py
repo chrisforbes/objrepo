@@ -5,15 +5,14 @@ class Record(models.Model):
     metadata = JSONField(blank=True)
     title = models.TextField()
 
-    @property
     def all_metadata(self):
         result = {}
 
         for l in self.out_links.filter(inherit=True):
             if l.prefix is None:
-                result.update(l.link_to.all_metadata)
+                result.update(l.link_to.all_metadata())
             else:
-                for k,v in l.link_to.all_metadata.iteritems():
+                for k,v in l.link_to.all_metadata().iteritems():
                     result[l.prefix + ':' + k] = v
 
         result.update(self.metadata)

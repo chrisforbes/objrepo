@@ -22,7 +22,7 @@ class RecordTests(TestCase):
             })
 
     def test_metadata_one_record(self):
-        d = self.r.all_metadata
+        d = self.r.all_metadata()
         self.assertEqual(d['ex:llama_id'], 42)
 
     def test_metadata_noinherit(self):
@@ -33,7 +33,7 @@ class RecordTests(TestCase):
             label='ex:related_to',
             inherit=False)
 
-        d = self.r.all_metadata
+        d = self.r.all_metadata()
 
         self.assertEqual(d['ex:llama_id'], 42)
         self.assertNotIn('ex:another_property', d)
@@ -46,7 +46,7 @@ class RecordTests(TestCase):
             label='ex:related_to',
             inherit=True)
 
-        d = self.r.all_metadata
+        d = self.r.all_metadata()
 
         self.assertEqual(d['ex:llama_id'], 42)
         self.assertEqual(d['ex:another_property'], 23)
@@ -62,7 +62,7 @@ class RecordTests(TestCase):
             inherit=True,
             prefix='p')
 
-        d = self.r.all_metadata
+        d = self.r.all_metadata()
 
         self.assertEqual(d['ex:llama_id'], 42)
         self.assertEqual(d['p:ex:another_property'], 23)
